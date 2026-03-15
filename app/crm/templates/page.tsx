@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Plus, GripVertical, Trash2, Pencil, Users } from "lucide-react";
@@ -96,10 +97,10 @@ function TemplateCard({
     };
 }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
-    const removeTemplate = useMutation(api.crm.pipelineTemplates.remove);
-    const toggleAssignee = useMutation(api.crm.pipelineTemplates.toggleAssignee);
-    const toggleFollower = useMutation(api.crm.pipelineTemplates.toggleFollower);
-    const toggleAssigner = useMutation(api.crm.pipelineTemplates.toggleAssigner);
+    const removeTemplate = useSafeMutation(api.crm.pipelineTemplates.remove);
+    const toggleAssignee = useSafeMutation(api.crm.pipelineTemplates.toggleAssignee);
+    const toggleFollower = useSafeMutation(api.crm.pipelineTemplates.toggleFollower);
+    const toggleAssigner = useSafeMutation(api.crm.pipelineTemplates.toggleAssigner);
 
     const handleDelete = async () => {
         if (confirm("Are you sure you want to delete this template?")) {
@@ -179,8 +180,8 @@ function TemplateForm({
             : ["Lead", "Meeting", "Proposal", "Closed Won", "Closed Lost"].map((s, i) => ({ id: `stage-${i}`, name: s }))
     );
 
-    const createTemplate = useMutation(api.crm.pipelineTemplates.create);
-    const updateTemplate = useMutation(api.crm.pipelineTemplates.update);
+    const createTemplate = useSafeMutation(api.crm.pipelineTemplates.create);
+    const updateTemplate = useSafeMutation(api.crm.pipelineTemplates.update);
 
     const handleAddStage = () => setStages([...stages, { id: `stage-${crypto.randomUUID()}`, name: "New Stage" }]);
 

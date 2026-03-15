@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Opportunity } from "./kanban-board";
@@ -63,11 +64,11 @@ export function OpportunityEditSheet({ opportunity, isOpen, onClose, stages }: O
         expectedCloseDate: "",
     });
 
-    const updateOpp = useMutation(api.crm.opportunities.update);
-    const deleteOpp = useMutation(api.crm.opportunities.remove);
-    const toggleAssignee = useMutation(api.crm.opportunities.toggleAssignee);
-    const toggleFollower = useMutation(api.crm.opportunities.toggleFollower);
-    const toggleAssigner = useMutation(api.crm.opportunities.toggleAssigner);
+    const updateOpp = useSafeMutation(api.crm.opportunities.update);
+    const deleteOpp = useSafeMutation(api.crm.opportunities.remove);
+    const toggleAssignee = useSafeMutation(api.crm.opportunities.toggleAssignee);
+    const toggleFollower = useSafeMutation(api.crm.opportunities.toggleFollower);
+    const toggleAssigner = useSafeMutation(api.crm.opportunities.toggleAssigner);
 
     const accounts = useQuery(api.crm.accounts.list);
     const contacts = useQuery(api.crm.contacts.list);

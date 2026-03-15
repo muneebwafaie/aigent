@@ -3,9 +3,9 @@
 import {
   Authenticated,
   Unauthenticated,
-  useMutation,
   useQuery,
 } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "../convex/_generated/api";
 import Link from "next/link";
 import { SignUpButton } from "@clerk/nextjs";
@@ -57,7 +57,7 @@ function SignInForm() {
 //     useQuery(api.myFunctions.listNumbers, {
 //       count: 10,
 //     }) ?? {};
-//   const addNumber = useMutation(api.myFunctions.addNumber);
+//   const addNumber = useSafeMutation(api.myFunctions.addNumber);
 
 //   if (viewer === undefined || numbers === undefined) {
 //     return (

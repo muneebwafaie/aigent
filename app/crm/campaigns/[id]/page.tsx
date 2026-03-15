@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { toast } from "sonner";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -49,6 +50,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Archive } from "lucide-react";
+import type { OptimisticLocalStore } from "convex/browser";
 
 export default function CampaignDetailPage() {
     const params = useParams();
@@ -57,14 +59,14 @@ export default function CampaignDetailPage() {
 
     const campaign = useQuery(api.crm.campaigns.get, { id: campaignId });
     const opportunities = useQuery(api.crm.opportunities.listByCampaign, { campaignId });
-    const toggleAssignee = useMutation(api.crm.campaigns.toggleAssignee);
-    const toggleFollower = useMutation(api.crm.campaigns.toggleFollower);
-    const toggleAssigner = useMutation(api.crm.campaigns.toggleAssigner);
+    const toggleAssignee = useSafeMutation(api.crm.campaigns.toggleAssignee);
+    const toggleFollower = useSafeMutation(api.crm.campaigns.toggleFollower);
+    const toggleAssigner = useSafeMutation(api.crm.campaigns.toggleAssigner);
 
-    const archiveCampaign = useMutation(api.crm.campaigns.archive);
-    const removeCampaign = useMutation(api.crm.campaigns.remove);
-    const moveStage = useMutation(api.crm.opportunities.moveStage).withOptimisticUpdate(
-        (localStore, { id, stageIndex }) => {
+    const archiveCampaign = useSafeMutation(api.crm.campaigns.archive);
+    const removeCampaign = useSafeMutation(api.crm.campaigns.remove);
+    const moveStage = useSafeMutation(api.crm.opportunities.moveStage).withOptimisticUpdate(
+        (localStore: OptimisticLocalStore, { id, stageIndex }) => {
             const existingOpps = localStore.getQuery(api.crm.opportunities.listByCampaign, { campaignId });
             if (existingOpps) {
                 const newOpps = existingOpps.map(opp =>
@@ -74,7 +76,7 @@ export default function CampaignDetailPage() {
             }
         }
     );
-    const removeOpp = useMutation(api.crm.opportunities.remove);
+    const removeOpp = useSafeMutation(api.crm.opportunities.remove);
 
     const handleArchive = async () => {
         try {
@@ -292,7 +294,7 @@ function CampaignStagesForm({
         initialStages.map((s, i) => ({ id: `stage-${i}`, name: s }))
     );
 
-    const updateStages = useMutation(api.crm.campaigns.updateStages);
+    const updateStages = useSafeMutation(api.crm.campaigns.updateStages);
 
     const sensors = useSensors(
         useSensor(PointerSensor),

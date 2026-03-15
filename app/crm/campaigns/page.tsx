@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Plus, Trash2, ArrowRight, MoreHorizontal, Archive } from "lucide-react";
@@ -46,8 +47,8 @@ export default function CampaignsPage() {
     const campaigns = useQuery(api.crm.campaigns.list, {});
     const templates = useQuery(api.crm.pipelineTemplates.list);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const archiveCampaign = useMutation(api.crm.campaigns.archive);
-    const removeCampaign = useMutation(api.crm.campaigns.remove);
+    const archiveCampaign = useSafeMutation(api.crm.campaigns.archive);
+    const removeCampaign = useSafeMutation(api.crm.campaigns.remove);
 
     const handleArchive = async (id: Id<"campaigns">) => {
         try {
@@ -194,7 +195,7 @@ function CampaignForm({
         status: "active" as const,
     });
 
-    const createCampaign = useMutation(api.crm.campaigns.create);
+    const createCampaign = useSafeMutation(api.crm.campaigns.create);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

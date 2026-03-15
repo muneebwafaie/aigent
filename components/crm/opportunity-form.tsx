@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
@@ -33,7 +34,7 @@ export function OpportunityForm({ campaignId, onSuccess, stages }: OpportunityFo
         expectedCloseDate: "",
     });
 
-    const createOpportunity = useMutation(api.crm.opportunities.create);
+    const createOpportunity = useSafeMutation(api.crm.opportunities.create);
     const accounts = useQuery(api.crm.accounts.list);
     const contacts = useQuery(api.crm.contacts.list);
 

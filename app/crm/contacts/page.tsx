@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Plus, Eye, Trash2, MoreHorizontal, Users } from "lucide-react";
@@ -52,10 +53,10 @@ export default function ContactsPage() {
     const contacts = useQuery(api.crm.contacts.list);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [manageTeamContact, setManageTeamContact] = useState<Contact | null>(null);
-    const removeContact = useMutation(api.crm.contacts.remove);
-    const toggleAssignee = useMutation(api.crm.contacts.toggleAssignee);
-    const toggleFollower = useMutation(api.crm.contacts.toggleFollower);
-    const toggleAssigner = useMutation(api.crm.contacts.toggleAssigner);
+    const removeContact = useSafeMutation(api.crm.contacts.remove);
+    const toggleAssignee = useSafeMutation(api.crm.contacts.toggleAssignee);
+    const toggleFollower = useSafeMutation(api.crm.contacts.toggleFollower);
+    const toggleAssigner = useSafeMutation(api.crm.contacts.toggleAssigner);
 
     const handleDelete = async (id: Id<"contacts">) => {
         if (confirm("Are you sure you want to delete this contact?")) {
@@ -187,7 +188,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
         accountId: "none"
     });
 
-    const createContact = useMutation(api.crm.contacts.create);
+    const createContact = useSafeMutation(api.crm.contacts.create);
     const accounts = useQuery(api.crm.accounts.list);
 
     const handleSubmit = async (e: React.FormEvent) => {

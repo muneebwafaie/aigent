@@ -1,6 +1,7 @@
 "use client";
 
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useParams, useRouter } from "next/navigation";
@@ -20,9 +21,9 @@ export default function AccountDetailPage() {
 
     const account = useQuery(api.crm.accounts.get, { id: accountId });
     const contacts = useQuery(api.crm.contacts.listByAccount, { accountId });
-    const toggleAssignee = useMutation(api.crm.accounts.toggleAssignee);
-    const toggleFollower = useMutation(api.crm.accounts.toggleFollower);
-    const toggleAssigner = useMutation(api.crm.accounts.toggleAssigner);
+    const toggleAssignee = useSafeMutation(api.crm.accounts.toggleAssignee);
+    const toggleFollower = useSafeMutation(api.crm.accounts.toggleFollower);
+    const toggleAssigner = useSafeMutation(api.crm.accounts.toggleAssigner);
 
     if (account === undefined) {
         return (

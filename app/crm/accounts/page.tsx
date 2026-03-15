@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
+import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Plus, Eye, Pencil, Trash2, MoreHorizontal } from "lucide-react";
@@ -38,7 +39,7 @@ type Account = {
     name: string;
     industry?: string;
     website?: string;
-    size?: "1-10" | "11-50" | "51-200" | "201-500" | "500+";
+    size?: string;
     billingAddress?: string;
 };
 
@@ -46,7 +47,7 @@ export default function AccountsPage() {
     const router = useRouter();
     const accounts = useQuery(api.crm.accounts.list);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const removeAccount = useMutation(api.crm.accounts.remove);
+    const removeAccount = useSafeMutation(api.crm.accounts.remove);
 
     const handleDelete = async (id: Id<"accounts">) => {
         if (confirm("Are you sure you want to delete this account?")) {
@@ -154,7 +155,7 @@ function AccountForm({ onSuccess }: { onSuccess: () => void }) {
         size: "1-10" as const,
     });
 
-    const createAccount = useMutation(api.crm.accounts.create);
+    const createAccount = useSafeMutation(api.crm.accounts.create);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
