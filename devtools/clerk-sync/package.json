@@ -1,0 +1,22 @@
+{
+    "name": "clerk-sync",
+    "version": "1.0.0",
+    "description": "Dev tool to sync Clerk roles/permissions to a Convex DB for type generation",
+    "main": "index.js",
+    "scripts": {
+        "dev": "convex dev",
+        "gen-types": "tsx client/gen-types.ts",
+        "backfill": "convex run actions:backfill"
+    },
+    "dependencies": {
+        "@clerk/backend": "^1.21.4",
+        "convex": "^1.17.0",
+        "dotenv": "^17.2.3",
+        "svix": "^1.45.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "tsx": "^4.19.2",
+        "typescript": "^5.7.2"
+    }
+}
