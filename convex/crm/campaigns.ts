@@ -335,9 +335,13 @@ export const toggleAssignee = authedMutation({
         const isAssigner = campaign.assignerIds?.includes(ctx.identity.subject);
         const isAdmin = hasPermission(ctx.identity, "org:campaigns:global_update");
         const isSelf = args.userId === ctx.identity.subject;
+        const isAlreadyAssigned = (campaign.assignedUserIds || []).includes(args.userId);
 
-        if (!isAdmin && !isAssigner && !isSelf) {
-            throw new ConvexError("Only admins, assigners, or the user themselves can manage assignments");
+        // Adding requires admin/assigner. Self-removal is always allowed.
+        if (!isAdmin && !isAssigner) {
+            if (!isAlreadyAssigned || !isSelf) {
+                throw new ConvexError("Access denied: requires assigner or admin permission to manage assignees");
+            }
         }
 
         const currentIds = campaign.assignedUserIds || [];
@@ -367,9 +371,13 @@ export const toggleFollower = authedMutation({
         const isAssigner = campaign.assignerIds?.includes(ctx.identity.subject);
         const isAdmin = hasPermission(ctx.identity, "org:campaigns:global_update");
         const isSelf = args.userId === ctx.identity.subject;
+        const isAlreadyFollowing = (campaign.followerIds || []).includes(args.userId);
 
-        if (!isAdmin && !isAssigner && !isSelf) {
-            throw new ConvexError("Only admins, assigners, or the user themselves can manage followers");
+        // Adding requires admin/assigner. Self-removal is always allowed.
+        if (!isAdmin && !isAssigner) {
+            if (!isAlreadyFollowing || !isSelf) {
+                throw new ConvexError("Access denied: requires assigner or admin permission to manage followers");
+            }
         }
 
         const currentIds = campaign.followerIds || [];

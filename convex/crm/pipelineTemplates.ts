@@ -133,9 +133,13 @@ export const toggleAssignee = authedMutation({
         const isAssigner = template.assignerIds?.includes(ctx.identity.subject);
         const isAdmin = hasPermission(ctx.identity, "org:pipelines:global_update");
         const isSelf = args.userId === ctx.identity.subject;
+        const isAlreadyAssigned = (template.assignedUserIds || []).includes(args.userId);
 
-        if (!isAdmin && !isAssigner && !isSelf) {
-            throw new ConvexError("Only admins, assigners, or the user themselves can manage assignments");
+        // Adding requires admin/assigner. Self-removal is always allowed.
+        if (!isAdmin && !isAssigner) {
+            if (!isAlreadyAssigned || !isSelf) {
+                throw new ConvexError("Access denied: requires assigner or admin permission to manage assignees");
+            }
         }
 
         const currentIds = template.assignedUserIds || [];
@@ -165,9 +169,13 @@ export const toggleFollower = authedMutation({
         const isAssigner = template.assignerIds?.includes(ctx.identity.subject);
         const isAdmin = hasPermission(ctx.identity, "org:pipelines:global_update");
         const isSelf = args.userId === ctx.identity.subject;
+        const isAlreadyFollowing = (template.followerIds || []).includes(args.userId);
 
-        if (!isAdmin && !isAssigner && !isSelf) {
-            throw new ConvexError("Only admins, assigners, or the user themselves can manage followers");
+        // Adding requires admin/assigner. Self-removal is always allowed.
+        if (!isAdmin && !isAssigner) {
+            if (!isAlreadyFollowing || !isSelf) {
+                throw new ConvexError("Access denied: requires assigner or admin permission to manage followers");
+            }
         }
 
         const currentIds = template.followerIds || [];

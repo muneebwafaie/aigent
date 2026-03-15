@@ -40,7 +40,28 @@ export function OpportunityForm({ campaignId, onSuccess, stages }: OpportunityFo
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
         if (!formData.title.trim()) return toast.error("Opportunity title is required");
+        const value =
+            formData.value === "" ? 0 : Number(formData.value);
+        const probability = Number(formData.probability);
+        const expectedCloseDate =
+            formData.expectedCloseDate === ""
+                ? undefined
+                : Date.parse(formData.expectedCloseDate);
+
+        if (!Number.isFinite(value) || value < 0) {
+            return toast.error("Value must be a valid non-negative number");
+        }
+        if (!Number.isInteger(probability) || probability < 0 || probability > 100) {
+            return toast.error("Probability must be an integer between 0 and 100");
+        }
+        if (formData.stageIndex < 0 || formData.stageIndex >= stages.length) {
+            return toast.error("Please select a valid stage");
+        }
+        if (expectedCloseDate !== undefined && Number.isNaN(expectedCloseDate)) {
+            return toast.error("Expected close date is invalid");
+        }
 
         try {
             await createOpportunity({
@@ -48,10 +69,10 @@ export function OpportunityForm({ campaignId, onSuccess, stages }: OpportunityFo
                 accountId: formData.accountId === "none" ? undefined : formData.accountId as Id<"accounts">,
                 contactId: formData.contactId === "none" ? undefined : formData.contactId as Id<"contacts">,
                 title: formData.title.trim(),
-                value: formData.value ? parseFloat(formData.value) : 0,
-                probability: formData.probability ? parseInt(formData.probability) : 50,
+                value,
+                probability,
                 stageIndex: formData.stageIndex,
-                expectedCloseDate: formData.expectedCloseDate ? new Date(formData.expectedCloseDate).getTime() : undefined,
+                expectedCloseDate,
             });
             toast.success("Opportunity created");
             onSuccess();

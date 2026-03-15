@@ -341,9 +341,11 @@ export const toggleFollower = authedMutation({
         const isSelf = args.userId === ctx.identity.subject;
         const isAlreadyFollowing = opp.followerIds.includes(args.userId);
 
-        // Anyone can follow themselves, but managing others requires admin/assigner
-        if (!isSelf && !isAdmin && !isAssigner) {
-            throw new Error("Access denied");
+        // Adding requires admin/assigner. Self-removal is always allowed.
+        if (!isAdmin && !isAssigner) {
+            if (!isAlreadyFollowing || !isSelf) {
+                throw new Error("Access denied: requires assigner or admin permission to manage followers");
+            }
         }
 
         if (isAlreadyFollowing) {
