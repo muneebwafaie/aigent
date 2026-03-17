@@ -175,7 +175,9 @@ export function ContactsTable({ contacts, onRowClick }: ContactsTableProps) {
         case "Backspace":
           if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
-            handleDelete(contacts[row]._id);
+            const contact = contacts[row];
+            if (!contact) return;
+            handleDelete(contact._id);
           }
           break;
       }
