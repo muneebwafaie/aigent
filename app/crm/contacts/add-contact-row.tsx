@@ -112,6 +112,7 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
       <TableCell className="p-0 pr-2">
         <Button
           size="sm"
+          aria-label="Add contact"
           variant="ghost"
           className="h-8 w-8 p-0"
           onClick={handleSubmit}
