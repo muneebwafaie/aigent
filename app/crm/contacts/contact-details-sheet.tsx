@@ -103,14 +103,18 @@ export function ContactDetailsSheet({ contactId, onClose }: ContactDetailsSheetP
     setShowDeleteConfirm(true);
   };
 
-  const confirmDelete = () => {
+
+  const confirmDelete = async () => {
     if (!contactId) return;
     setShowDeleteConfirm(false);
-    onClose();
-    removeContact({ id: contactId }).catch(() => {
+    try {
+      onClose();
+      await removeContact({ id: contactId });
+      toast.success("Contact deleted");
+    } catch {
       toast.error("Failed to delete contact");
-    });
-    toast.success("Contact deleted");
+
+    }
   };
 
   const fields: Array<{
