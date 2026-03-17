@@ -19,11 +19,12 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
     (localStore, args) => {
       const list = localStore.getQuery(api.contacts.list);
       if (list) {
+        const optimisticId = `optimistic_${crypto.randomUUID()}` as Id<"contacts">;
         localStore.setQuery(api.contacts.list, {}, [
           ...list,
           ({
             ...args,
-            _id: "optimistic_id" as Id<"contacts">,
+            _id: optimisticId,
             _creationTime: Date.now(),
             tenantId: list[0]?.tenantId || "temp",
             isOptimistic: true,
