@@ -315,6 +315,7 @@ const ContactRow = React.memo(function ContactRow({
         <div className="flex items-center justify-end gap-1 transition-opacity">
           <Button
             variant="ghost"
+            aria-label="View contact"
             size="icon"
             className="size-8 text-muted-foreground hover:text-primary"
             onClick={() => onView(contact._id)}
@@ -323,6 +324,7 @@ const ContactRow = React.memo(function ContactRow({
           </Button>
           <Button
             variant="ghost"
+            aria-label="Delete contact"
             size="icon"
             className="size-8 text-muted-foreground hover:text-destructive"
             onClick={() => onDelete(contact._id)}
