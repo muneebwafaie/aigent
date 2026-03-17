@@ -15,10 +15,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,7 +34,7 @@ interface ContactDetailsSheetProps {
 export function ContactDetailsSheet({ contactId, onClose }: ContactDetailsSheetProps) {
   const contact = useQuery(api.contacts.get, contactId ? { id: contactId } : "skip");
 
-  const updateContact = useSafeMutation(api.contacts.update).withOptimisticUpdate(
+  const updateContact = useMutation(api.contacts.update).withOptimisticUpdate(
     (localStore, { id, ...updates }) => {
       const existing = localStore.getQuery(api.contacts.get, { id });
       if (existing) {
@@ -52,7 +51,7 @@ export function ContactDetailsSheet({ contactId, onClose }: ContactDetailsSheetP
     }
   );
 
-  const removeContact = useSafeMutation(api.contacts.remove).withOptimisticUpdate(
+  const removeContact = useMutation(api.contacts.remove).withOptimisticUpdate(
     (localStore, { id }) => {
       const list = localStore.getQuery(api.contacts.list);
       if (list) {

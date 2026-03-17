@@ -17,12 +17,12 @@ import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
-import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
 
 export function AddContactDialog() {
   const [isOpen, setIsOpen] = useState(false);
-  const createContact = useSafeMutation(api.contacts.create).withOptimisticUpdate(
+  const createContact = useMutation(api.contacts.create).withOptimisticUpdate(
     (localStore, args) => {
       const list = localStore.getQuery(api.contacts.list);
       if (list) {

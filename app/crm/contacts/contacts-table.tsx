@@ -3,7 +3,6 @@
 import * as React from "react";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
-import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import {
   Table,
   TableBody,
@@ -26,6 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useMutation } from "convex/react";
 
 // ─── Column definitions (static) ─────────────────────────────────────────────
 const COLUMNS = [
@@ -50,8 +50,7 @@ export function ContactsTable({ contacts, onRowClick }: ContactsTableProps) {
   const [focusedCell, setFocusedCell] = React.useState({ row: 0, col: 0 });
   const [deleteId, setDeleteId] = React.useState<Id<"contacts"> | null>(null);
 
-  // ── Mutations via useSafeMutation ────────────────────────────────────────
-  const updateContact = useSafeMutation(api.contacts.update).withOptimisticUpdate(
+  const updateContact = useMutation(api.contacts.update).withOptimisticUpdate(
     (localStore, { id, ...updates }) => {
       const existing = localStore.getQuery(api.contacts.get, { id });
       if (existing) {
@@ -68,7 +67,7 @@ export function ContactsTable({ contacts, onRowClick }: ContactsTableProps) {
     }
   );
 
-  const removeContact = useSafeMutation(api.contacts.remove).withOptimisticUpdate(
+  const removeContact = useMutation(api.contacts.remove).withOptimisticUpdate(
     (localStore, { id }) => {
       const list = localStore.getQuery(api.contacts.list);
       if (list) {

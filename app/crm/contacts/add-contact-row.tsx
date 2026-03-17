@@ -1,21 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { api } from "@/convex/_generated/api";
-import { useSafeMutation } from "@/hooks/use-safe-mutation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
 
 interface AddContactRowProps {
   rowIndex: number;
 }
 
 export function AddContactRow({ rowIndex }: AddContactRowProps) {
-  const createContact = useSafeMutation(api.contacts.create).withOptimisticUpdate(
+  const firstInputRef = useRef<HTMLInputElement>(null);
+  const createContact = useMutation(api.contacts.create).withOptimisticUpdate(
     (localStore, args) => {
       const list = localStore.getQuery(api.contacts.list);
       if (list) {
@@ -50,6 +51,7 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
     createContact(data).catch(() => {
       // Revert the form so user can retry
       setFormData(data);
+      firstInputRef.current?.focus();
       toast.error("Failed to add contact");
     });
   };
@@ -64,6 +66,7 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
     <TableRow className="bg-muted/20 hover:bg-muted/30 transition-colors">
       <TableCell className="p-0">
         <Input
+          ref={firstInputRef}
           placeholder="First Name"
           value={formData.firstName}
           onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
