@@ -12,9 +12,10 @@ import { useMutation } from "convex/react";
 
 interface AddContactRowProps {
   rowIndex: number;
+  onFocusCell: (colIndex: number) => void;
 }
 
-export function AddContactRow({ rowIndex }: AddContactRowProps) {
+export function AddContactRow({ rowIndex, onFocusCell }: AddContactRowProps) {
   const firstInputRef = useRef<HTMLInputElement>(null);
   const createContact = useMutation(api.contacts.create).withOptimisticUpdate(
     (localStore, args) => {
@@ -70,7 +71,7 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
           placeholder="First Name"
           value={formData.firstName}
           onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-          onKeyDown={handleKeyDown}
+          onFocus={() => onFocusCell(0)}
           data-row={rowIndex}
           data-col={0}
           className="h-10 border-0 bg-transparent shadow-none px-4 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:bg-background rounded-none"
@@ -81,7 +82,7 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
           placeholder="Last Name"
           value={formData.lastName}
           onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-          onKeyDown={handleKeyDown}
+          onFocus={() => onFocusCell(1)}
           data-row={rowIndex}
           data-col={1}
           className="h-10 border-0 bg-transparent shadow-none px-4 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:bg-background rounded-none"
@@ -92,7 +93,7 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
           placeholder="Email"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          onKeyDown={handleKeyDown}
+          onFocus={() => onFocusCell(2)}
           data-row={rowIndex}
           data-col={2}
           className="h-10 border-0 bg-transparent shadow-none px-4 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:bg-background rounded-none"
@@ -103,7 +104,7 @@ export function AddContactRow({ rowIndex }: AddContactRowProps) {
           placeholder="Job Title"
           value={formData.jobTitle}
           onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-          onKeyDown={handleKeyDown}
+          onFocus={() => onFocusCell(3)}
           data-row={rowIndex}
           data-col={3}
           className="h-10 border-0 bg-transparent shadow-none px-4 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:bg-background rounded-none"

@@ -235,7 +235,10 @@ export function ContactsTable({ contacts, onRowClick }: ContactsTableProps) {
               onView={onRowClick}
             />
           ))}
-          <AddContactRow rowIndex={contacts.length} />
+          <AddContactRow
+            rowIndex={contacts.length}
+            onFocusCell={(col) => setFocusedCell({ row: contacts.length, col })}
+          />
         </TableBody>
       </Table>
 
