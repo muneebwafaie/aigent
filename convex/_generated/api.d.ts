@@ -9,11 +9,7 @@
  */
 
 import type * as auth from "../auth.js";
-import type * as crm_accounts from "../crm/accounts.js";
-import type * as crm_campaigns from "../crm/campaigns.js";
-import type * as crm_contacts from "../crm/contacts.js";
-import type * as crm_opportunities from "../crm/opportunities.js";
-import type * as crm_pipelineTemplates from "../crm/pipelineTemplates.js";
+import type * as contacts from "../contacts.js";
 import type * as helpers_authedFunctions from "../helpers/authedFunctions.js";
 
 import type {
@@ -24,11 +20,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
-  "crm/accounts": typeof crm_accounts;
-  "crm/campaigns": typeof crm_campaigns;
-  "crm/contacts": typeof crm_contacts;
-  "crm/opportunities": typeof crm_opportunities;
-  "crm/pipelineTemplates": typeof crm_pipelineTemplates;
+  contacts: typeof contacts;
   "helpers/authedFunctions": typeof helpers_authedFunctions;
 }>;
 

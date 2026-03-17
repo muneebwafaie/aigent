@@ -55,11 +55,6 @@ const crmRoutes = [
         url: "/crm/campaigns",
     },
     {
-        title: "Accounts",
-        icon: Building2,
-        url: "/crm/accounts",
-    },
-    {
         title: "Contacts",
         icon: Users,
         url: "/crm/contacts",
