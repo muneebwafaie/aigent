@@ -100,14 +100,17 @@ export function ContactsTable({ contacts, onRowClick }: ContactsTableProps) {
     []
   );
 
-  const confirmDelete = React.useCallback(() => {
+  const confirmDelete = React.useCallback(async () => {
     if (!deleteId) return;
-    const id = deleteId;
-    setDeleteId(null);
-    removeContact({ id }).catch(() => {
+    try {
+      const id = deleteId;
+      setDeleteId(null);
+      await removeContact({ id });
+      toast.success("Contact deleted");
+    } catch {
       toast.error("Failed to delete contact");
-    });
-    toast.success("Contact deleted");
+    }
+
   }, [deleteId, removeContact]);
 
   // ── Focus management ────────────────────────────────────────────────────
